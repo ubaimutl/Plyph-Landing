@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plyph — AI Text Actions, Everywhere You Type</title>
+    <meta name="description" content="A privacy-first, cross-platform AI text assistant. Correct, rewrite, translate, and run custom prompts on selected text across macOS, iOS, Android, Firefox, and GNOME.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.simpleicons.org/simpleicons"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 24px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #e5e5e5;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo-text {
+            font-family: 'Source Serif 4', serif;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #e5e5e5;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 100px;
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-family: 'Source Serif 4', serif;
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 500;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            color: #888;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #e5e5e5;
+            color: #0a0a0a;
+        }
+
+        .btn-primary:hover {
+            background: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #e5e5e5;
+            border: 1px solid #2a2a2a;
+        }
+
+        .btn-secondary:hover {
+            border-color: #444;
+        }
+
+        /* Platforms */
+        .platforms {
+            padding: 80px 0;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-header h2 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: #888;
+            font-size: 16px;
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .platform-card {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 40px 24px 32px;
+            text-decoration: none;
+            color: #e5e5e5;
+            transition: all 0.2s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .platform-card:hover {
+            border-color: #333;
+            background: #151515;
+            transform: translateY(-2px);
+        }
+
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .platform-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .platform-card h3 {
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .platform-card p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .platform-card .status {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #1a1a1a;
+            border-radius: 100px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 48px;
+        }
+
+        .feature {
+            padding: 24px 0;
+        }
+
+        .feature h3 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .feature p {
+            color: #888;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* Privacy */
+        .privacy {
+            padding: 80px 0;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+        }
+
+        .privacy-box {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 64px 48px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .privacy-box h2 {
+            font-family: 'Source Serif 4', serif;
+            font-size: 28px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .privacy-box p {
+            color: #888;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .privacy-list {
+            list-style: none;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .privacy-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #1a1a1a;
+            color: #ccc;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .privacy-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+        }
+
+        footer p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        footer a {
+            color: #888;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #e5e5e5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 0 60px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .privacy-box {
+                padding: 48px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="PromptPaste logo">
+  <rect width="1024" height="1024" fill="#050607"/>
+
+  <path
+    d="
+      M 512 156
+      C 496 257 458 365 401 455
+      C 349 537 286 607 220 660
+      C 302 636 368 637 419 675
+      C 465 709 493 755 512 800
+      C 531 755 559 709 605 675
+      C 656 637 722 636 804 660
+      C 738 607 675 537 623 455
+      C 566 365 528 257 512 156
+      Z"
+    fill="#F4F4F4"/>
+
+
+  <path
+    d="
+      M 512 405
+      C 461 405 424 439 424 487
+      C 424 539 444 594 468 650
+      C 490 702 505 751 512 800
+      C 509 757 507 714 511 678
+      C 516 635 532 612 559 586
+      C 589 557 600 527 600 488
+      C 600 440 563 405 512 405
+      Z"
+    fill="#050607"/>
+
+  <!-- Circular counter -->
+  <circle cx="512" cy="493" r="37" fill="#F4F4F4"/>
+</svg>
+                <span class="logo-text">Plyph</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#platforms">Platforms</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="https://github.com/ubaimutl/Plyph" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            
+            <h1>AI text actions,<br><span>everywhere you type.</span></h1>
+            <p>Correct, rewrite, translate, and run custom prompts on selected text across macOS, iOS, Android, Firefox, and GNOME. Your keys, your models, your data.</p>
+            <div class="hero-actions">
+                <a href="#platforms" class="btn btn-primary">Choose your platform</a>
+                <a href="https://github.com/ubaimutl/Plyph" target="_blank" class="btn btn-secondary">View on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="platforms" id="platforms">
+        <div class="container">
+            <div class="section-header">
+                <h2>Available on six platforms</h2>
+                <p>One workflow. Every environment you work in.</p>
+            </div>
+            <div class="platform-grid">
+               
+<a href="https://github.com/ubaimutl/Plyph" target="_blank" class="platform-card">
+    <div class="platform-icon">
+        <svg fill="#e5e5e5" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GNOME</title><path d="M19.703 0c-4.99 0-5.927 7.111-3.12 7.111 2.81 0 8.113-7.111 3.12-7.111M11.99.872q-.119-.001-.25.016c-2.811.364-1.82 5.25-.324 5.34 1.449.09 3.032-5.347.574-5.356M7.123 2.803a1.4 1.4 0 0 0-.488.114c-2.259.933-.344 4.776.921 4.519 1.168-.24 1.319-4.671-.433-4.632Zm-3.6 3.016a1.05 1.05 0 0 0-.634.215c-1.807 1.248.607 4.269 1.671 3.799.93-.41.338-3.967-1.037-4.014m10.032 2.309c-3.835.033-8.716 1.978-9.567 5.784C3.044 18.14 7.875 24 12.915 24c2.48 0 5.34-2.24 5.875-5.077.409-2.163-4.81-1.295-4.623.137.225 1.715-1.258 2.561-2.711 1.454-4.623-3.52 7.658-5.276 6.847-10.086-.263-1.56-2.29-2.322-4.748-2.301Z"/></svg>
+    </div>
+    <h3>GNOME</h3>
+    <p>Shell extension for Linux desktops</p>
+    <span class="status">JavaScript</span>
+</a>
+
+
+<a href="https://github.com/ubaimutl/Plyph-Macos" target="_blank" class="platform-card">
+    <div class="platform-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#e5e5e5">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+    </div>
+    <h3>macOS</h3>
+    <p>Native app with Accessibility integration</p>
+    <span class="status">Swift · SwiftUI</span>
+</a>
+
+
+<a href="https://github.com/ubaimutl/Plyph-Chrome" class="platform-card">
+    <div class="platform-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-browser-chrome" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M16 8a8 8 0 0 1-7.022 7.94l1.902-7.098a3 3 0 0 0 .05-1.492A3 3 0 0 0 10.237 6h5.511A8 8 0 0 1 16 8M0 8a8 8 0 0 0 7.927 8l1.426-5.321a3 3 0 0 1-.723.255 3 3 0 0 1-1.743-.147 3 3 0 0 1-1.043-.7L.633 4.876A8 8 0 0 0 0 8m5.004-.167L1.108 3.936A8.003 8.003 0 0 1 15.418 5H8.066a3 3 0 0 0-1.252.243 2.99 2.99 0 0 0-1.81 2.59M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+</svg>
+    </div>
+    <h3>Chrome</h3>
+    <p>Browser extension with selection toolbar</p>
+    <span class="status">JavaScript</span>
+</a>
+
+
+<a href="https://github.com/ubaimutl/Plyph-Firefox" target="_blank" class="platform-card">
+    <div class="platform-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-browser-firefox" viewBox="0 0 16 16">
+  <path d="M13.384 3.408c.535.276 1.22 1.152 1.556 1.963a8 8 0 0 1 .503 3.897l-.009.077-.026.224A7.758 7.758 0 0 1 .006 8.257v-.04q.025-.545.114-1.082c.01-.074.075-.42.09-.489l.01-.051a6.6 6.6 0 0 1 1.041-2.35q.327-.465.725-.87.35-.358.758-.65a1.5 1.5 0 0 1 .26-.137c-.018.268-.04 1.553.268 1.943h.003a5.7 5.7 0 0 1 1.868-1.443 3.6 3.6 0 0 0 .021 1.896q.105.07.2.152c.107.09.226.207.454.433l.068.066.009.009a2 2 0 0 0 .213.18c.383.287.943.563 1.306.741.201.1.342.168.359.193l.004.008c-.012.193-.695.858-.933.858-2.206 0-2.564 1.335-2.564 1.335.087.997.714 1.839 1.517 2.357a4 4 0 0 0 .439.241q.114.05.228.094c.325.115.665.18 1.01.194 3.043.143 4.155-2.804 3.129-4.745v-.001a3 3 0 0 0-.731-.9 3 3 0 0 0-.571-.37l-.003-.002a2.68 2.68 0 0 1 1.87.454 3.92 3.92 0 0 0-3.396-1.983q-.116.001-.23.01l-.042.003V4.31h-.002a4 4 0 0 0-.8.14 7 7 0 0 0-.333-.314 2 2 0 0 0-.2-.152 4 4 0 0 1-.088-.383 5 5 0 0 1 1.352-.289l.05-.003c.052-.004.125-.01.205-.012C7.996 2.212 8.733.843 10.17.002l-.003.005.003-.001.002-.002h.002l.002-.002h.015a.02.02 0 0 1 .012.007 2.4 2.4 0 0 0 .206.48q.09.153.183.297c.49.774 1.023 1.379 1.543 1.968.771.874 1.512 1.715 2.036 3.02l-.001-.013a8 8 0 0 0-.786-2.353"/>
+</svg>
+    </div>
+    <h3>Firefox</h3>
+    <p>Browser extension with selection toolbar</p>
+    <span class="status">JavaScript</span>
+</a>
+
+<a href="https://github.com/ubaimutl/Plyph-Android" target="_blank" class="platform-card">
+    <div class="platform-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-android2" viewBox="0 0 16 16">
+  <path d="m10.213 1.471.691-1.26q.069-.124-.048-.192-.128-.057-.195.058l-.7 1.27A4.8 4.8 0 0 0 8.005.941q-1.032 0-1.956.404l-.7-1.27Q5.281-.037 5.154.02q-.117.069-.049.193l.691 1.259a4.25 4.25 0 0 0-1.673 1.476A3.7 3.7 0 0 0 3.5 5.02h9q0-1.125-.623-2.072a4.27 4.27 0 0 0-1.664-1.476ZM6.22 3.303a.37.37 0 0 1-.267.11.35.35 0 0 1-.263-.11.37.37 0 0 1-.107-.264.37.37 0 0 1 .107-.265.35.35 0 0 1 .263-.11q.155 0 .267.11a.36.36 0 0 1 .112.265.36.36 0 0 1-.112.264m4.101 0a.35.35 0 0 1-.262.11.37.37 0 0 1-.268-.11.36.36 0 0 1-.112-.264q0-.154.112-.265a.37.37 0 0 1 .268-.11q.155 0 .262.11a.37.37 0 0 1 .107.265q0 .153-.107.264M3.5 11.77q0 .441.311.75.311.306.76.307h.758l.01 2.182q0 .414.292.703a.96.96 0 0 0 .7.288.97.97 0 0 0 .71-.288.95.95 0 0 0 .292-.703v-2.182h1.343v2.182q0 .414.292.703a.97.97 0 0 0 .71.288.97.97 0 0 0 .71-.288.95.95 0 0 0 .292-.703v-2.182h.76q.436 0 .749-.308.31-.307.311-.75V5.365h-9zm10.495-6.587a.98.98 0 0 0-.702.278.9.9 0 0 0-.293.685v4.063q0 .406.293.69a.97.97 0 0 0 .702.284q.42 0 .712-.284a.92.92 0 0 0 .293-.69V6.146a.9.9 0 0 0-.293-.685 1 1 0 0 0-.712-.278m-12.702.283a1 1 0 0 1 .712-.283q.41 0 .702.283a.9.9 0 0 1 .293.68v4.063a.93.93 0 0 1-.288.69.97.97 0 0 1-.707.284 1 1 0 0 1-.712-.284.92.92 0 0 1-.293-.69V6.146q0-.396.293-.68"/>
+</svg>
+    </div>
+    <h3>Android</h3>
+    <p>Text selection actions and optional keyboard</p>
+    <span class="status">Kotlin</span>
+</a>
+
+<!-- iOS -->
+<a href="https://github.com/ubaimutl/Plyph-IOS" target="_blank" class="platform-card">
+    <div class="platform-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#e5e5e5">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+    </div>
+    <h3>iOS</h3>
+    <p>Native app with custom keyboard extension</p>
+    <span class="status">Swift · SwiftUI</span>
+</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built for how you actually work</h2>
+                <p>No copy-pasting. No separate AI apps. Just select and go.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Works where you type</h3>
+                    <p>Transform selected text in any app — code editors, browsers, notes, email clients. Plyph stays out of the way until you need it.</p>
+                </div>
+                <div class="feature">
+                    <h3>Bring your own AI</h3>
+                    <p>Use Ollama locally or connect Groq, Gemini, OpenAI, OpenRouter, Cerebras, Cloudflare Workers AI, or Vercel AI Gateway. You choose the provider.</p>
+                </div>
+                <div class="feature">
+                    <h3>Unlimited custom actions</h3>
+                    <p>Create reusable prompts with variables like ${selection}, ${language}, ${tone}, and ${style}. Override provider and model per action.</p>
+                </div>
+                <div class="feature">
+                    <h3>Review before replacing</h3>
+                    <p>Preview and edit AI output before it replaces your original text. Or enable direct replacement for faster workflows.</p>
+                </div>
+                <div class="feature">
+                    <h3>Global shortcuts</h3>
+                    <p>Run common actions without touching the mouse. Keyboard-first design for power users who value speed.</p>
+                </div>
+                <div class="feature">
+                    <h3>Per-action models</h3>
+                    <p>Assign different providers, models, and token limits to different actions. Use a fast model for corrections, a powerful one for rewrites.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="privacy">
+        <div class="container">
+            <div class="privacy-box">
+                <h2>Privacy by design</h2>
+                <p>Plyph has no account system, no analytics, no telemetry, and no background clipboard monitoring. Your text is sent only when you explicitly choose an action.</p>
+                <ul class="privacy-list">
+                    <li><span class="check">✓</span> API keys stored in platform-native secure storage</li>
+                    <li><span class="check">✓</span> No Plyph-hosted relay — direct provider connections</li>
+                    <li><span class="check">✓</span> No account required</li>
+                    <li><span class="check">✓</span> No analytics or telemetry</li>
+                    <li><span class="check">✓</span> No background clipboard monitoring</li>
+                    <li><span class="check">✓</span> Local models supported via Ollama</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Built by <a href="https://github.com/ubaimutl" target="_blank">Ubaida Mutlaq</a> · <a href="https://github.com/ubaimutl/Plyph" target="_blank">Source code on GitHub</a></p>
+        </div>
+    </footer>
+</body>
+</html>
